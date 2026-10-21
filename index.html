@@ -145,7 +145,7 @@
     reply: '从第一次叫你小佳开始，好像就已经喜欢你了。',
     btnReply: '发送',
     mess: '那就说好了',
-    messDesc: '这周末，杨枝甘露，我请。庆祝我们名正言顺的第一天',
+    messDesc: '',
     btnAccept: '好',
   };
 
@@ -175,6 +175,7 @@
   $('replyBtn').textContent = CONFIG.btnReply;
   $('messText').innerText = CONFIG.mess;
   $('messDesc').textContent = CONFIG.messDesc;
+  if (!CONFIG.messDesc) $('messDesc').style.display = 'none';
   $('acceptBtn').textContent = CONFIG.btnAccept;
 
   /* ================= 第一幕 → 第二幕 ================= */
