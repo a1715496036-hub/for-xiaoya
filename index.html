@@ -192,8 +192,8 @@
   #letterSign { position: relative; }
   .poke-heart { position:absolute; font-size:13px; color:#ef7ba7; pointer-events:none; animation: pokeFloat 0.9s ease-out forwards; z-index:4; }
   @keyframes pokeFloat { from { opacity:1; transform: translateY(0) scale(.7) rotate(0deg); } to { opacity:0; transform: translateY(-46px) scale(1.25) rotate(24deg); } }
-  #bouquet { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition: opacity .5s ease; z-index:5; }
-  #bouquet.show { opacity:1; pointer-events:auto; }
+  #bouquet { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition: opacity .5s ease, background .5s ease; z-index:5; background: rgba(255,246,249,0); }
+  #bouquet.show { opacity:1; pointer-events:auto; background: rgba(255,246,249,.9); }
   #bouquet .bq-art { width:min(64vw, 250px); transform: scale(.3); filter: drop-shadow(0 14px 24px rgba(150,70,110,.30)); }
   #bouquet.show .bq-art { animation: bqPop 0.85s cubic-bezier(.2,1.6,.4,1) forwards; }
   @keyframes bqPop { 0% { transform: scale(.3) translateY(46px) rotate(-4deg); } 60% { transform: scale(1.06) translateY(-6px) rotate(1.5deg); } 100% { transform: scale(1) translateY(0) rotate(0deg); } }
@@ -202,7 +202,7 @@
   @keyframes capIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
   .bq-petal { position:absolute; width:11px; height:15px; background:linear-gradient(160deg,#ffffff,#e9e2f6); border-radius:80% 4px 80% 4px; opacity:0; pointer-events:none; }
   #bouquet.show .bq-petal { animation: petalFall 2.6s ease-in forwards; }
-  @keyframes petalFall { 0% { opacity:0; transform: translateY(-10px) rotate(0deg); } 12% { opacity:.95; } 100% { opacity:0; transform: translateY(150px) rotate(300deg); } }
+  @keyframes petalFall { 0% { opacity:0; transform: translateY(-10px) rotate(0deg); } 12% { opacity:.95; } 100% { opacity:0; transform: translateY(46vh) rotate(300deg); } }
   #musicBtn {
     position: fixed; top: 14px; right: 14px; z-index: 40;
     width: 40px; height: 40px; border-radius: 50%;
@@ -295,7 +295,7 @@
       <div class="letter-text"><span id="typedText"></span><span id="caret"></span></div>
       <div id="letterSign"><span id="signName"></span><br><span class="date" id="letterDate"></span><br><button id="pokeTag" type="button">戳戳我</button></div>
     </div>
-<div id="bouquet"><div style="position:relative;"><span class="bq-petal" style="left:8%; top:16%; animation-delay:0.25s;"></span><span class="bq-petal" style="left:17%; top:16%; animation-delay:0.43s;"></span><span class="bq-petal" style="left:26%; top:16%; animation-delay:0.61s;"></span><span class="bq-petal" style="left:35%; top:16%; animation-delay:0.79s;"></span><span class="bq-petal" style="left:44%; top:16%; animation-delay:0.97s;"></span><span class="bq-petal" style="left:53%; top:16%; animation-delay:1.15s;"></span><span class="bq-petal" style="left:62%; top:16%; animation-delay:1.33s;"></span><span class="bq-petal" style="left:71%; top:16%; animation-delay:1.51s;"></span><span class="bq-petal" style="left:80%; top:16%; animation-delay:1.69s;"></span></div><svg class="bq-art" viewBox="0 0 200 235" xmlns="http://www.w3.org/2000/svg">
+<div id="bouquet"><span class="bq-petal" style="left:6%; top:5%; animation-delay:0.3s;"></span><span class="bq-petal" style="left:16%; top:5%; animation-delay:0.52s;"></span><span class="bq-petal" style="left:26%; top:5%; animation-delay:0.74s;"></span><span class="bq-petal" style="left:36%; top:5%; animation-delay:0.96s;"></span><span class="bq-petal" style="left:46%; top:5%; animation-delay:1.18s;"></span><span class="bq-petal" style="left:56%; top:5%; animation-delay:1.4000000000000001s;"></span><span class="bq-petal" style="left:66%; top:5%; animation-delay:1.62s;"></span><span class="bq-petal" style="left:76%; top:5%; animation-delay:1.84s;"></span><span class="bq-petal" style="left:86%; top:5%; animation-delay:2.06s;"></span><svg class="bq-art" viewBox="0 0 200 235" xmlns="http://www.w3.org/2000/svg">
   <g stroke="#7fae7a" stroke-width="3.5" fill="none" stroke-linecap="round">
     <path d="M100,196 C94,150 84,104 66,60"/><path d="M100,196 C98,146 98,96 100,40"/>
     <path d="M100,196 C104,150 120,100 134,56"/><path d="M100,196 C96,158 88,116 84,80"/>
