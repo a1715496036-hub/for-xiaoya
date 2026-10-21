@@ -8,83 +8,159 @@
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   body {
     font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
-    background: linear-gradient(160deg, #ffd9e4 0%, #fff5f7 55%, #ffeef3 100%);
+    background: linear-gradient(160deg, #ffd3e2 0%, #fff5f8 52%, #ffe9f1 100%);
     height: 100vh; overflow: hidden;
     display: flex; flex-direction: column; align-items: center;
   }
+  /* 背景柔光晕：两团光缓慢漂移 */
+  body::before, body::after {
+    content:''; position: fixed; border-radius: 50%;
+    pointer-events: none; z-index: 0; filter: blur(6px);
+  }
+  body::before {
+    width: 62vmax; height: 62vmax; left: -20vmax; top: -22vmax;
+    background: radial-gradient(circle, rgba(255,143,171,.55), rgba(255,143,171,0) 65%);
+    animation: drift1 17s ease-in-out infinite alternate;
+  }
+  body::after {
+    width: 56vmax; height: 56vmax; right: -18vmax; bottom: -20vmax;
+    background: radial-gradient(circle, rgba(199,182,255,.5), rgba(199,182,255,0) 65%);
+    animation: drift2 21s ease-in-out infinite alternate;
+  }
+  @keyframes drift1 { to { transform: translate(6vmax, 5vmax) scale(1.12); } }
+  @keyframes drift2 { to { transform: translate(-5vmax, -5vmax) scale(1.1); } }
+
+  /* 漂浮爱心层 */
+  #ambient { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 1; }
+  .float-heart {
+    position: absolute; bottom: -6vh; line-height: 1;
+    animation-name: floatUp; animation-timing-function: linear; animation-iteration-count: infinite;
+    will-change: transform;
+  }
+  @keyframes floatUp {
+    0% { transform: translate3d(0, 0, 0) rotate(-8deg); }
+    100% { transform: translate3d(4vw, -114vh, 0) rotate(16deg); }
+  }
 
   /* ===== 主页面（第二幕） ===== */
-  #main { display:none; flex-direction:column; align-items:center; width:100%; height:100%; }
+  #main { display:none; flex-direction:column; align-items:center; width:100%; height:100%; position: relative; z-index: 2; }
   #avatarMain {
     margin-top: 8vh; width:150px; height:150px; border-radius:50%;
-    border:4px solid #ffb3c6; object-fit:cover; display:block;
-    box-shadow: 0 10px 30px rgba(231,84,128,.28);
+    border:4px solid rgba(255,255,255,.9); object-fit:cover; display:block;
+    box-shadow: 0 0 0 6px rgba(255,179,198,.35), 0 0 46px rgba(255,92,138,.45), 0 14px 34px rgba(231,84,128,.3);
     animation: floaty 3.4s ease-in-out infinite alternate;
   }
   @keyframes floaty { from { transform: translateY(0); } to { transform: translateY(-7px); } }
   #titleMain {
     margin-top: 26px; padding: 0 26px; text-align:center;
-    font-size: 24px; font-weight: bold; color:#d81b60; line-height: 1.45;
+    font-size: 25px; font-weight: bold; line-height: 1.45; letter-spacing: 1px;
+    background: linear-gradient(92deg, #d81b60, #ff5c8a 60%, #ff8fab);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: riseIn .7s cubic-bezier(.2,.8,.3,1) both;
   }
-  #descMain { margin-top: 10px; font-size: 15px; color:#ad1457; opacity:.75; }
-  .stage { position: relative; width: 100%; flex: 1; }
+  #descMain { margin-top: 10px; font-size: 15px; color:#ad1457; opacity:.75; animation: riseIn .7s .1s cubic-bezier(.2,.8,.3,1) both; }
+  .stage { position: relative; width: 100%; flex: 1; animation: riseIn .7s .18s cubic-bezier(.2,.8,.3,1) both; }
+  @keyframes riseIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
   .btn {
     position:absolute; border:none; border-radius:999px; cursor:pointer;
     font-family:inherit; font-weight:bold; white-space:nowrap;
-    transition: left .16s ease, top .16s ease;
+    transition: left .16s ease, top .16s ease, transform .15s ease;
   }
-  #yesBtn { background:#ff5c8a; color:#fff; font-size:17px; padding:13px 28px; box-shadow:0 6px 20px rgba(255,92,138,.4); }
-  #noBtn  { background:#ececec; color:#777;  font-size:15px; padding:11px 22px; }
+  .btn:active { transform: scale(.94); }
+  #yesBtn {
+    background: linear-gradient(135deg, #ff5c8a, #ff8fab); color:#fff;
+    font-size:17px; padding:13px 30px; letter-spacing: 1px;
+    box-shadow: 0 8px 24px rgba(255,92,138,.45), inset 0 1px 0 rgba(255,255,255,.5);
+  }
+  #noBtn {
+    background: rgba(255,255,255,.78); color:#8a5a6b; font-size:15px; padding:11px 22px;
+    border: 1px solid rgba(216,27,96,.08);
+    box-shadow: 0 4px 14px rgba(120,40,70,.12);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  }
 
   /* ===== 弹窗（第一/三/四幕） ===== */
   .overlay {
     position: fixed; inset: 0; z-index: 20;
-    background: rgba(60, 10, 30, .45);
+    background: rgba(66, 12, 34, .42);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
     display: none; align-items: center; justify-content: center;
     padding: 22px;
   }
   .overlay.show { display: flex; }
   .card {
-    background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><text x="6" y="42" font-size="30" fill="%23ffd9e4">♥</text></svg>');
-    border-radius: 20px; padding: 30px 26px 26px;
+    background-color: rgba(255,255,255,.88);
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><text x="6" y="42" font-size="30" fill="%23ffd9e4">♥</text></svg>');
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,.85);
+    border-radius: 24px; padding: 32px 26px 28px;
     max-width: 340px; width: 100%; text-align: center;
-    box-shadow: 0 18px 50px rgba(0,0,0,.3);
-    animation: pop .35s cubic-bezier(.2,1.6,.4,1);
+    box-shadow: 0 24px 60px rgba(90,10,40,.28);
+    animation: pop .38s cubic-bezier(.2,1.4,.4,1);
   }
-  @keyframes pop { from { transform: scale(.8); opacity:0; } to { transform: scale(1); opacity:1; } }
+  @keyframes pop { from { transform: scale(.9) translateY(12px); opacity:0; } to { transform: scale(1) translateY(0); opacity:1; } }
   .card img.round {
     width:110px; height:110px; border-radius:50%; object-fit:cover;
-    border:3px solid #ffb3c6; margin-bottom: 14px;
+    border:3px solid rgba(255,255,255,.95); margin-bottom: 14px;
+    box-shadow: 0 0 0 4px rgba(255,179,198,.4), 0 8px 22px rgba(231,84,128,.3);
   }
-  .card h2 { font-size: 24px; color:#d81b60; margin-bottom: 12px; }
-  .card .poem { font-size: 15.5px; color:#555; line-height: 1.9; white-space: pre-line; }
-  .card .big { font-size: 21px; color:#d81b60; font-weight: bold; line-height: 1.5; }
+  .card h2 {
+    font-size: 24px; margin-bottom: 12px;
+    background: linear-gradient(92deg, #d81b60, #ff5c8a);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .card .poem { font-size: 15.5px; color:#5c4750; line-height: 1.9; white-space: pre-line; }
+  .card .big {
+    font-size: 21px; font-weight: bold; line-height: 1.5;
+    background: linear-gradient(92deg, #d81b60, #ff5c8a);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
   .card .sub { margin-top: 10px; font-size: 15px; color:#666; line-height: 1.6; }
   .card button {
     margin-top: 22px; border:none; border-radius: 999px; cursor:pointer;
-    background:#ff5c8a; color:#fff; font-family:inherit; font-weight:bold;
-    font-size: 16px; padding: 11px 30px; box-shadow: 0 5px 16px rgba(255,92,138,.4);
+    background: linear-gradient(135deg, #ff5c8a, #ff8fab); color:#fff;
+    font-family:inherit; font-weight:bold; letter-spacing: 1px;
+    font-size: 16px; padding: 11px 32px;
+    box-shadow: 0 6px 18px rgba(255,92,138,.42), inset 0 1px 0 rgba(255,255,255,.5);
+    transition: transform .15s ease;
   }
+  .card button:active { transform: scale(.95); }
   .card input {
     margin-top: 16px; width: 100%; padding: 12px 14px;
     border: 2px solid #ffb3c6; border-radius: 12px;
     font-size: 16px; font-family: inherit; outline: none; color:#333;
-    background: rgba(255,255,255,.9);
+    background: rgba(255,255,255,.92);
+    transition: border-color .2s, box-shadow .2s;
   }
-  .card input:focus { border-color: #ff5c8a; }
+  .card input:focus { border-color: #ff5c8a; box-shadow: 0 0 0 4px rgba(255,92,138,.15); }
 
   /* ===== 结尾（简单收尾） ===== */
   #endScreen {
     position: fixed; inset: 0; z-index: 15; display: none;
     flex-direction: column; align-items: center; justify-content: center;
-    background: linear-gradient(160deg, #ffd9e4 0%, #fff5f7 60%, #ffeef3 100%);
+    background:
+      radial-gradient(circle at 50% 42%, #ffe0ec 0%, rgba(255,224,236,0) 55%),
+      linear-gradient(160deg, #ffd3e2 0%, #fff5f8 60%, #ffe9f1 100%);
   }
-  #endScreen .heart { font-size: 64px; animation: beat 1.2s ease-in-out infinite; }
+  #endScreen .heart {
+    font-size: 78px; animation: beat 1.2s ease-in-out infinite;
+    filter: drop-shadow(0 12px 28px rgba(255,92,138,.55));
+  }
   @keyframes beat { 0%,100% { transform: scale(1); } 30% { transform: scale(1.15); } }
-  #endScreen .line { margin-top: 18px; font-size: 19px; color:#d81b60; letter-spacing: 2px; }
+  #endScreen .line {
+    margin-top: 20px; font-size: 19px; letter-spacing: 3px;
+    background: linear-gradient(92deg, #d81b60, #ff5c8a);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: riseIn 1s .25s cubic-bezier(.2,.8,.3,1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: .01s !important; animation-iteration-count: 1 !important; }
+  }
 </style>
 </head>
 <body>
+  <div id="ambient"></div>
 
   <!-- 第二幕：主页面 -->
   <div id="main">
@@ -250,6 +326,26 @@
     main.style.display = 'none';
     $('endScreen').style.display = 'flex';
   });
+</script>
+<script>
+  /* 漂浮爱心：随机生成，缓慢上升 */
+  (function () {
+    var box = document.getElementById('ambient');
+    var colors = ['#ffb3c6', '#ff8fab', '#ffc2d4', '#ffd9e4'];
+    for (var i = 0; i < 14; i++) {
+      var s = document.createElement('span');
+      s.className = 'float-heart';
+      s.textContent = '\u2764';
+      s.style.left = (Math.random() * 100) + 'vw';
+      s.style.fontSize = (11 + Math.random() * 16) + 'px';
+      s.style.color = colors[i % colors.length];
+      s.style.opacity = (0.22 + Math.random() * 0.3).toFixed(2);
+      var d = 11 + Math.random() * 10;
+      s.style.animationDuration = d + 's';
+      s.style.animationDelay = (-Math.random() * d) + 's';
+      box.appendChild(s);
+    }
+  })();
 </script>
 </body>
 </html>
